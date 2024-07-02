@@ -6,7 +6,7 @@ workflows:
       cocoapods: default
       vars:
           BUNDLE_ID: "com.quannq.cicd" # replace with your app bundle
-          XCODE_PROJECT: "cicd" # Replace with your xcodeproj name
+          XCODE_PROJECT: "cicd.xcodeproj" # Replace with your xcodeproj name
           XCODE_SCHEME: "cicd" # Replace with your project name
       
     scripts:
