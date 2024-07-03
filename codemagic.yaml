@@ -27,11 +27,11 @@ workflows:
           -sdk iphonesimulator \
           -destination 'platform=iOS Simulator,name=iPhone 15,OS=17.5' \
           clean build test CODE_SIGN_IDENTITY="" CODE_SIGNING_REQUIRED=NO          
-    #   - name: Build debug app
-    #     script: |
-    #       xcodebuild build -project "$XCODE_PROJECT" \
-    #       -scheme "$XCODE_SCHEME" \
-    #       CODE_SIGN_IDENTITY="" CODE_SIGNING_REQUIRED=NO CODE_SIGNING_ALLOWED=NO - name: Build ipa for distribution
+      - name: Build debug app
+        script: |
+          xcodebuild build -project "$XCODE_PROJECT" \
+          -scheme "$XCODE_SCHEME" \
+          CODE_SIGN_IDENTITY="" CODE_SIGNING_REQUIRED=NO CODE_SIGNING_ALLOWED=NO
     #   - name: Increment build number
     #     script: | 
     #       #!/bin/sh
