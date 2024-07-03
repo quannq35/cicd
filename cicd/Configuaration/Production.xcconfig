@@ -1,0 +1,12 @@
+//
+//  Production.xcconfig
+//  cicd
+//
+//  Created by Quân Nguyễn on 3/7/24.
+//
+
+// Configuration settings file format documentation can be found at:
+// https://help.apple.com/xcode/#/dev745c5c97
+
+Root_URL = www.production.google.com
+Api_Key = Production
