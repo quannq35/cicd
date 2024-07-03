@@ -5,7 +5,7 @@ workflows:
       xcode: latest
       cocoapods: default
       vars:
-          BUNDLE_ID: "com.quannq.cicd" # replace with your app bundle
+          BUNDLE_ID: "com.vcc.test" # replace with your app bundle
           XCODE_PROJECT: "cicd.xcodeproj" #  
           XCODE_SCHEME: "cicd" # Replace with your project name
       
@@ -13,11 +13,10 @@ workflows:
       events:   # Định nghĩa các sự kiện cụ thể sẽ kích hoạt workflow
         - push
         - tag
-      branch_patterns: # Đinh nghĩa các nhánh mà workflow sẽ áp dụng
-        - pattern: main  # Chỉ định nhánh master là nhánh được áp dụng mẫu này
-          include: true    # xác định nhánh master là nhánh sẽ được bao gồm trong các nhánh kích hoạt workflow
-          source: true     # Xác định nhánh mater sẽ là nguồn cho các sự kiện như push hoặc tag để kích hoạt workflow
-
+      branch_patterns:    # Đinh nghĩa các nhánh mà workflow sẽ áp dụng
+        - pattern: main   # Chỉ định nhánh master là nhánh được áp dụng mẫu này
+          include: true   # xác định nhánh master là nhánh sẽ được bao gồm trong các nhánh kích hoạt workflow
+          source: true    # Xác định nhánh mater sẽ là nguồn cho các sự kiện như push hoặc tag để kích hoạt workflow
     scripts:
       - name: Run tests
         script: |
@@ -37,7 +36,9 @@ workflows:
     #       #!/bin/sh
     #       cd $CM_BUILD_DIR
     #       LATEST_BUILD_NUMBER=$(app-store-connect get-latest-app-store-build-number "$APP_STORE_APPLE_ID")
-    #       agvtool new-version -all $(($LATEST_BUILD_NUMBER + 1))      
+    #       agvtool new-version -all $(($LATEST_BUILD_NUMBER + 1))  
+
+
     #   - name: Build ipa for distribution
     #     script: | 
     #       xcode-project build-ipa \
