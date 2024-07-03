@@ -16,6 +16,8 @@
 		A8E203652C33FFC400718E79 /* cicdTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A8E203642C33FFC400718E79 /* cicdTests.swift */; };
 		A8E2036F2C33FFC400718E79 /* cicdUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A8E2036E2C33FFC400718E79 /* cicdUITests.swift */; };
 		A8E203712C33FFC400718E79 /* cicdUITestsLaunchTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A8E203702C33FFC400718E79 /* cicdUITestsLaunchTests.swift */; };
+		A8E2037E2C34FA3600718E79 /* CalculatorTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A8E2037D2C34FA3600718E79 /* CalculatorTests.swift */; };
+		A8E203802C34FA6F00718E79 /* CalculatorViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = A8E2037F2C34FA6F00718E79 /* CalculatorViewModel.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -49,6 +51,8 @@
 		A8E2036A2C33FFC400718E79 /* cicdUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = cicdUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		A8E2036E2C33FFC400718E79 /* cicdUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = cicdUITests.swift; sourceTree = "<group>"; };
 		A8E203702C33FFC400718E79 /* cicdUITestsLaunchTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = cicdUITestsLaunchTests.swift; sourceTree = "<group>"; };
+		A8E2037D2C34FA3600718E79 /* CalculatorTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CalculatorTests.swift; sourceTree = "<group>"; };
+		A8E2037F2C34FA6F00718E79 /* CalculatorViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CalculatorViewModel.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -106,6 +110,7 @@
 				A8E203562C33FFC400718E79 /* Assets.xcassets */,
 				A8E203582C33FFC400718E79 /* LaunchScreen.storyboard */,
 				A8E2035B2C33FFC400718E79 /* Info.plist */,
+				A8E2037F2C34FA6F00718E79 /* CalculatorViewModel.swift */,
 			);
 			path = cicd;
 			sourceTree = "<group>";
@@ -114,6 +119,7 @@
 			isa = PBXGroup;
 			children = (
 				A8E203642C33FFC400718E79 /* cicdTests.swift */,
+				A8E2037D2C34FA3600718E79 /* CalculatorTests.swift */,
 			);
 			path = cicdTests;
 			sourceTree = "<group>";
@@ -260,6 +266,7 @@
 			files = (
 				A8E203522C33FFC200718E79 /* ViewController.swift in Sources */,
 				A8E2034E2C33FFC200718E79 /* AppDelegate.swift in Sources */,
+				A8E203802C34FA6F00718E79 /* CalculatorViewModel.swift in Sources */,
 				A8E203502C33FFC200718E79 /* SceneDelegate.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -269,6 +276,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				A8E203652C33FFC400718E79 /* cicdTests.swift in Sources */,
+				A8E2037E2C34FA3600718E79 /* CalculatorTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
