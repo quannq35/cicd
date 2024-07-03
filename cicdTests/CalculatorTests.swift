@@ -28,6 +28,6 @@ final class CalculatorTests: XCTestCase {
     
     func testSubtract() {
         let result = calculatorVM.subtract(a: 2, b: 1)
-        XCTAssertEqual(result, 2, "Expected 2 - 1 to equal 1")
+        XCTAssertEqual(result, 1, "Expected 2 - 1 to equal 1")
     }
 }
