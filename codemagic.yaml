@@ -39,16 +39,16 @@ workflows:
     #       agvtool new-version -all $(($LATEST_BUILD_NUMBER + 1))  
 
 
-    #   - name: Build ipa for distribution
-    #     script: | 
-    #       xcode-project build-ipa \
-    #       --workspace "$CM_BUILD_DIR/$XCODE_WORKSPACE" \
-    #       --scheme "$XCODE_SCHEME"
-    # artifacts:
-    #    - build/ios/ipa/*.ipa
-    #    - /tmp/xcodebuild_logs/*.log
-    #    - $HOME/Library/Developer/Xcode/DerivedData/**/Build/**/*.app
-    #    - $HOME/Library/Developer/Xcode/DerivedData/**/Build/**/*.dSYM
+      - name: Build ipa for distribution
+        script: | 
+          xcode-project build-ipa \
+          --workspace "$CM_BUILD_DIR/$XCODE_WORKSPACE" \
+          --scheme "$XCODE_SCHEME"
+    artifacts:
+       - build/ios/ipa/*.ipa
+       - /tmp/xcodebuild_logs/*.log
+       - $HOME/Library/Developer/Xcode/DerivedData/**/Build/**/*.app
+       - $HOME/Library/Developer/Xcode/DerivedData/**/Build/**/*.dSYM
     publishing:
       email:
         recipients:
