@@ -9,6 +9,15 @@ workflows:
           XCODE_PROJECT: "cicd.xcodeproj" #  
           XCODE_SCHEME: "cicd" # Replace with your project name
       
+    triggering: # Định nghĩa các sự kiện nào sẽ kích hoạt workflow
+      events:   # Định nghĩa các sự kiện cụ thể sẽ kích hoạt workflow
+        - push
+        - tag
+      branch_pattern: # Đinh nghĩa các nhánh mà workflow sẽ áp dụng
+        - pattern: master  # Chỉ định nhánh master là nhánh được áp dụng mẫu này
+        - include: true    # xác định nhánh master là nhánh sẽ được bao gồm trong các nhánh kích hoạt workflow
+        - source: true     # Xác định nhánh mater sẽ là nguồn cho các sự kiện như push hoặc tag để kích hoạt workflow
+
     scripts:
       - name: Run tests
         script: |
@@ -18,28 +27,28 @@ workflows:
           -sdk iphonesimulator \
           -destination 'platform=iOS Simulator,name=iPhone 15,OS=17.5' \
           clean build test CODE_SIGN_IDENTITY="" CODE_SIGNING_REQUIRED=NO          
-      - name: Build debug app
-        script: |
-          xcodebuild build -project "$XCODE_PROJECT" \
-          -scheme "$XCODE_SCHEME" \
-          CODE_SIGN_IDENTITY="" CODE_SIGNING_REQUIRED=NO CODE_SIGNING_ALLOWED=NO - name: Build ipa for distribution
-      - name: Increment build number
-        script: | 
-          #!/bin/sh
-          cd $CM_BUILD_DIR
-          LATEST_BUILD_NUMBER=$(app-store-connect get-latest-app-store-build-number "$APP_STORE_APPLE_ID")
-          agvtool new-version -all $(($LATEST_BUILD_NUMBER + 1))      
-      - name: Build ipa for distribution
-        script: | 
-          xcode-project build-ipa \
-          --workspace "$CM_BUILD_DIR/$XCODE_WORKSPACE" \
-          --scheme "$XCODE_SCHEME"
-    artifacts:
-       - build/ios/ipa/*.ipa
-       - /tmp/xcodebuild_logs/*.log
-       - $HOME/Library/Developer/Xcode/DerivedData/**/Build/**/*.app
-       - $HOME/Library/Developer/Xcode/DerivedData/**/Build/**/*.dSYM
+    #   - name: Build debug app
+    #     script: |
+    #       xcodebuild build -project "$XCODE_PROJECT" \
+    #       -scheme "$XCODE_SCHEME" \
+    #       CODE_SIGN_IDENTITY="" CODE_SIGNING_REQUIRED=NO CODE_SIGNING_ALLOWED=NO - name: Build ipa for distribution
+    #   - name: Increment build number
+    #     script: | 
+    #       #!/bin/sh
+    #       cd $CM_BUILD_DIR
+    #       LATEST_BUILD_NUMBER=$(app-store-connect get-latest-app-store-build-number "$APP_STORE_APPLE_ID")
+    #       agvtool new-version -all $(($LATEST_BUILD_NUMBER + 1))      
+    #   - name: Build ipa for distribution
+    #     script: | 
+    #       xcode-project build-ipa \
+    #       --workspace "$CM_BUILD_DIR/$XCODE_WORKSPACE" \
+    #       --scheme "$XCODE_SCHEME"
+    # artifacts:
+    #    - build/ios/ipa/*.ipa
+    #    - /tmp/xcodebuild_logs/*.log
+    #    - $HOME/Library/Developer/Xcode/DerivedData/**/Build/**/*.app
+    #    - $HOME/Library/Developer/Xcode/DerivedData/**/Build/**/*.dSYM
     publishing:
       email:
         recipients:
-          - quannq@mail.com # Replace with your email
+          - quannq35@mail.com # Replace with your email
