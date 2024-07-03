@@ -15,8 +15,8 @@ workflows:
         - tag
       branch_patterns: # Đinh nghĩa các nhánh mà workflow sẽ áp dụng
         - pattern: master  # Chỉ định nhánh master là nhánh được áp dụng mẫu này
-        - include: true    # xác định nhánh master là nhánh sẽ được bao gồm trong các nhánh kích hoạt workflow
-        - source: true     # Xác định nhánh mater sẽ là nguồn cho các sự kiện như push hoặc tag để kích hoạt workflow
+          include: true    # xác định nhánh master là nhánh sẽ được bao gồm trong các nhánh kích hoạt workflow
+          source: true     # Xác định nhánh mater sẽ là nguồn cho các sự kiện như push hoặc tag để kích hoạt workflow
 
     scripts:
       - name: Run tests
@@ -52,3 +52,11 @@ workflows:
       email:
         recipients:
           - quannq35@mail.com # Replace with your email
+triggering: # Định nghĩa các sự kiện nào sẽ kích hoạt workflow
+      events:   # Định nghĩa các sự kiện cụ thể sẽ kích hoạt workflow
+        - push
+        - tag
+      branch_patterns: # Đinh nghĩa các nhánh mà workflow sẽ áp dụng
+        - pattern: master  # Chỉ định nhánh master là nhánh được áp dụng mẫu này
+          include: true    # xác định nhánh master là nhánh sẽ được bao gồm trong các nhánh kích hoạt workflow
+          source: true   
