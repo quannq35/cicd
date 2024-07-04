@@ -8,6 +8,11 @@ workflows:
           BUNDLE_ID: "com.vcc.test" # replace with your app bundle
           XCODE_PROJECT: "cicd.xcodeproj" #  
           XCODE_SCHEME: "cicd" # Replace with your project name
+          FCI_CERTIFICATE: Encrypted(...) # Replace with your distribute certificate
+          FCI_CERTIFICATE_PASSWORD: Encrypted(...)  # Replace with your certificate password
+          FCI_PROVISIONING_PROFILE: Encrypted(...)  # Replace with your provision profile
+      group:
+        - admin
       
     triggering: # Định nghĩa các sự kiện nào sẽ kích hoạt workflow
       events:   # Định nghĩa các sự kiện cụ thể sẽ kích hoạt workflow
@@ -31,33 +36,75 @@ workflows:
           xcodebuild build -project "$XCODE_PROJECT" \
           -scheme "$XCODE_SCHEME" \
           CODE_SIGN_IDENTITY="" CODE_SIGNING_REQUIRED=NO CODE_SIGNING_ALLOWED=NO
-    #   - name: Increment build number
-    #     script: | 
-    #       #!/bin/sh
-    #       cd $CM_BUILD_DIR
-    #       LATEST_BUILD_NUMBER=$(app-store-connect get-latest-app-store-build-number "$APP_STORE_APPLE_ID")
-    #       agvtool new-version -all $(($LATEST_BUILD_NUMBER + 1))  
+
+      - name: Set up keychain to be used for code signing using Codemagic CLI 'keychain' command 
+        script: keychain initalize
+
+      - name: Fetching signing files
+        script: app-store-connect fetch-signing-files "com.vcc.test" \
+          -- type IOS_APP_STORE \
+          -- create
+      
+      - name: Set up signing certificate
+        script: keychain add-certificate
+      
+      - name: Set up code signing settings on XCode project
+        script: xcode-project use-profiles
+      
+      - name: Build App
+        script: xcode-project build-ipa --project "$XCODE_PROJECT" --scheme "$XCODE_SCHEME"
+
+      # - name: Set up provision profile from enviroment variables
+      #   script: |
+      #     PROFILES_HOME="$HOME/Library/MobileDevice/Provisioning Profiles"
+      #     mkdir -p "$PROFILES_HOME"
+      #     PROFILE_PATH="$(mktemp "$PROFILES_HOME"/$(uuidgen).mobileprovision)"
+      #     echo ${FCI_PROVISIONING_PROFILE} | base64 --decode > "$PROFILE_PATH"
+      #     echo "Saved provisoning profile $PROFILE_PATH"
+      
+      # - name: Set up signing certificate
+      #   script: | 
+      #     echo $FCI_CERTIFICATE | base64 --decode > /tmp/certificate.p12
+      #     keychain add-certificates --certificate /tmp/certificate.p12 --certificate-password $FCI_CERTIFICATE_PASSWORD
+      # - name: Increment build number
+      #   script: agvtool new-version -all $(($BUILD_NUMBER + 1))
+
+      # - name: Set up code Signing settings on Xcode project
+      #   script: xcode-project use-profiles
+      
+      # - name: Build ipa for distribution
+      #   script: xcode-project build ipa --project "$XCODE_PROJECT" --scheme "$XCODE_SCHEME"
+      #   - name: Increment build number
+      #     script: | 
+      #       #!/bin/sh
+      #       cd $CM_BUILD_DIR
+      #       LATEST_BUILD_NUMBER=$(app-store-connect get-latest-app-store-build-number "$APP_STORE_APPLE_ID")
+      #       agvtool new-version -all $(($LATEST_BUILD_NUMBER + 1))  
 
 
-      - name: Build IPA
-        script: | 
-          xcodebuild -workspace cicd.xcodeproj \
-          - scheme "$XCODE_SCHEME" \
-          - sdk iphoneos \
-          - configuration Realease \
-          - archive \
-          - archivePath $Home/build/cicd.xcarchive
+      # - name: Build IPA
+      #   script: | 
+      #     xcodebuild -workspace cicd.xcodeproj \
+      #     - scheme "$XCODE_SCHEME" \
+      #     - sdk iphoneos \
+      #     - configuration Realease \
+      #     - archive \
+      #     - archivePath $Home/build/cicd.xcarchive
 
-          xcodebuild -exportArchive \
-          - archivePath $HOME/build/cicd.xcarchive \
-          - exportOptionsPlist ExportOptions.plist \
-          - exportPath $HOME/build/
+      #     xcodebuild -exportArchive \
+      #     - archivePath $HOME/build/cicd.xcarchive \
+      #     - exportOptionsPlist ExportOptions.plist \
+      #     - exportPath $HOME/build/
     artifacts:
        - build/ios/ipa/*.ipa
        - /tmp/xcodebuild_logs/*.log
        - $HOME/Library/Developer/Xcode/DerivedData/**/Build/**/*.app
        - $HOME/Library/Developer/Xcode/DerivedData/**/Build/**/*.dSYM
     publishing:
+      app_store_connect: 
+        api_key: $APP_STORE_CONNECT_PRIVATE_KEY
+        key_id: $APP_STORE_CONNECT_KEY_IDENTIFIER
+        issuer_id: $APP_STORE_CONNECT_USER_ID
       email:
         recipients:
           - quannq35@mail.com # Replace with your email 
