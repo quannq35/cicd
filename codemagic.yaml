@@ -17,7 +17,7 @@ workflows:
         - pattern: main   # Chỉ định nhánh master là nhánh được áp dụng mẫu này
           include: true   # xác định nhánh master là nhánh sẽ được bao gồm trong các nhánh kích hoạt workflow
           source: true    # Xác định nhánh mater sẽ là nguồn cho các sự kiện như push hoặc tag để kích hoạt workflow
-    scripts:
+    scripts: # CHứa các lệnh build ứng dụng, chạy tests ...
       - name: Run tests
         script: |
           xcodebuild \
@@ -53,3 +53,6 @@ workflows:
       email:
         recipients:
           - quannq35@mail.com # Replace with your email 
+        notify:
+          success: true
+          failure: false
