@@ -8,9 +8,6 @@ workflows:
           BUNDLE_ID: "com.vcc.test" # replace with your app bundle
           XCODE_PROJECT: "cicd.xcodeproj" #  
           XCODE_SCHEME: "cicd" # Replace with your project name
-          FCI_CERTIFICATE: Encrypted(...) # Replace with your distribute certificate
-          FCI_CERTIFICATE_PASSWORD: Encrypted(...)  # Replace with your certificate password
-          FCI_PROVISIONING_PROFILE: Encrypted(...)  # Replace with your provision profile
       # groups:
       #   - admin
       
