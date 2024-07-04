@@ -34,8 +34,8 @@ workflows:
       #     -scheme "$XCODE_SCHEME" \
       #     CODE_SIGN_IDENTITY="" CODE_SIGNING_REQUIRED=NO CODE_SIGNING_ALLOWED=NO
 
-      - name: Set up keychain to be used for code signing using Codemagic CLI 'keychain' command 
-        script: keychain initalize
+      # - name: Set up keychain to be used for code signing using Codemagic CLI 'keychain' command 
+      #   script: keychain initalize
 
       - name: Fetching signing files
         script: app-store-connect fetch-signing-files "com.vcc.test" \
