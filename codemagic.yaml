@@ -1,5 +1,5 @@
 workflows:  
-  ios-debug: # Workflow ID
+  ios-cicd: # Workflow ID
     name: Build Debugs # Workflow name
     environment:
       xcode: latest
@@ -37,7 +37,12 @@ workflows:
           xcodebuild build -project "$XCODE_PROJECT" \
           -scheme "$XCODE_SCHEME" \
           CODE_SIGN_IDENTITY="" CODE_SIGNING_REQUIRED=NO CODE_SIGNING_ALLOWED=NO
-      - script: xcode-project use-profiles
+      - script: xcode-project use-profiles # Áp dụng các profiles provisioning đã cấu hình cho dự án Xcode, giúp xác định quyền truy cập và cấu hình phát triển ứng dụng
+      
+      - name: Increment build number
+        script: |
+          agvtool next-version -all
+
       - name: Build ipa for distribution
         script: xcode-project build-ipa --project "$XCODE_PROJECT" --scheme "$XCODE_SCHEME" 
       
