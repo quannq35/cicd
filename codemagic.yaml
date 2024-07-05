@@ -140,22 +140,12 @@ workflows:
       - script: xcode-project use-profiles
       - name: Build ipa for distribution
         script: xcode-project build ipa --project "$XCODE_PROJECT" --scheme "$XCODE_SCHEME"
-        # - name: Increment build number
-        #   script: | 
-        #     #!/bin/sh
-        #     cd $CM_BUILD_DIR
-        #     LATEST_BUILD_NUMBER=$(app-store-connect get-latest-app-store-build-number "$APP_STORE_APPLE_ID")
-        #     agvtool new-version -all $(($LATEST_BUILD_NUMBER + 1))  
-      - name: Build IPA
-        script: | 
-          xcodebuild -project "$XCODE_PROJECT" \
-          - scheme "$XCODE_SCHEME" \
-          - sdk iphoneos \
-          - configuration Realease \
-          - archive \
-          - archivePath $Home/build/cicd.xcarchive
-
-          xcodebuild -exportArchive \
-          - archivePath $HOME/build/cicd.xcarchive \
-          - exportOptionsPlist ExportOptions.plist \
-          - exportPath $HOME/build/
+    artifacts:
+      - build/ios/ipa/*.ipa
+      - /tmp/xcodebuild_logs/*.log
+      - $HOME/Library/Developer/Xcode/DerivedData/**/Build/**/*.app
+      - $HOME/Library/Developer/Xcode/DerivedData/**/Build/**/*.dSYM
+    publishing: 
+      app_store_connect:
+        auth: integration
+        submit_to_testflight: true 
