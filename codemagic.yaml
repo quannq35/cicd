@@ -112,7 +112,7 @@ workflows:
   testFlight: 
     name: Publishing to TestFlight workflow
     environment: 
-    xcode: latest
+      xcode: latest
       cocoapods: default
       vars:
           BUNDLE_ID: "com.viva.lotusdev" # replace with your app bundle
