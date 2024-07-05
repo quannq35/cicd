@@ -30,41 +30,6 @@ workflows:
           xcodebuild build -project "$XCODE_PROJECT" \
           -scheme "$XCODE_SCHEME" \
           CODE_SIGN_IDENTITY="" CODE_SIGNING_REQUIRED=NO CODE_SIGNING_ALLOWED=NO
-
-      # - name: Set up keychain to be used for code signing using Codemagic CLI 'keychain' command 
-      #   script: keychain initialize
-
-      # - name: Fetching signing files
-      #   script: app-store-connect fetch-signing-files "com.vcc.test" \
-      #     --type IOS_APP_STORE \
-      #     --create
-      
-      # - name: Set up signing certificate
-      #   script: keychain add-certificate
-      
-      # - name: Set up code signing settings on XCode project
-      #   script: xcode-project use-profiles
-      
-      # - name: Build App
-      #   script: xcode-project build-ipa --project "$XCODE_PROJECT" --scheme "$XCODE_SCHEME"
-
-      # - name: Set up provision profile from enviroment variables
-      #   script: |
-      #     PROFILES_HOME="$HOME/Library/MobileDevice/Provisioning Profiles"
-      #     mkdir -p "$PROFILES_HOME"
-      #     PROFILE_PATH="$(mktemp "$PROFILES_HOME"/$(uuidgen).mobileprovision)"
-      #     echo ${FCI_PROVISIONING_PROFILE} | base64 --decode > "$PROFILE_PATH"
-      #     echo "Saved provisoning profile $PROFILE_PATH"
-      
-      # - name: Set up signing certificate
-      #   script: | 
-      #     echo $FCI_CERTIFICATE | base64 --decode > /tmp/certificate.p12
-      #     keychain add-certificates --certificate /tmp/certificate.p12 --certificate-password $FCI_CERTIFICATE_PASSWORD
-      # - name: Increment build number
-      #   script: agvtool new-version -all $(($BUILD_NUMBER + 1))
-
-      # - name: Set up code Signing settings on Xcode project
-      #   script: xcode-project use-profiles
       
       # - name: Build ipa for distribution
       #   script: xcode-project build ipa --project "$XCODE_PROJECT" --scheme "$XCODE_SCHEME"
@@ -95,10 +60,6 @@ workflows:
        - $HOME/Library/Developer/Xcode/DerivedData/**/Build/**/*.app
        - $HOME/Library/Developer/Xcode/DerivedData/**/Build/**/*.dSYM
     publishing:
-      app_store_connect: 
-        api_key: $APP_STORE_CONNECT_PRIVATE_KEY
-        key_id: $APP_STORE_CONNECT_KEY_IDENTIFIER
-        issuer_id: $APP_STORE_CONNECT_ISSUER_ID
       email:
         recipients:
           - quannq35@mail.com # Replace with your email 
@@ -144,3 +105,9 @@ workflows:
       app_store_connect:
         auth: integration
         submit_to_testflight: true 
+      email:
+        recipients:
+          - quannq35@mail.com # Replace with your email 
+        notify:
+          success: true
+          failure: false
