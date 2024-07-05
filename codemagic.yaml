@@ -64,63 +64,19 @@ workflows:
       #     - archivePath $HOME/build/cicd.xcarchive \
       #     - exportOptionsPlist ExportOptions.plist \
       #     - exportPath $HOME/build/
-    artifacts:
+    artifacts: # Chỉ định các tệp hoặc thư mục sẽ được lưu trữ sau quá trình build
        - build/ios/ipa/*.ipa
        - /tmp/xcodebuild_logs/*.log
        - $HOME/Library/Developer/Xcode/DerivedData/**/Build/**/*.app
        - $HOME/Library/Developer/Xcode/DerivedData/**/Build/**/*.dSYM
-    publishing:
+    
+    publishing: # Bắt đầu cho quá trình phát hành ứng dụng
       app_store_connect:
         auth: integration
         submit_to_testflight: true 
       email:
         recipients:
-          - quannq35@mail.com # Replace with your email 
+          - quannq35@gmail.com # Replace with your email 
         notify:
           success: true
-          failure: false
-
-  # build-testflight: 
-  #   name: Build TestFlight
-  #   environment: 
-  #     xcode: latest
-  #     cocoapods: default
-  #     vars:
-  #         BUNDLE_ID: "com.viva.lotusdev" # replace with your app bundle
-  #         XCODE_PROJECT: "cicd.xcodeproj" #  
-  #         XCODE_SCHEME: "cicd" # Replace with your project name
-  #     ios_signing:
-  #       provisioning_profiles: 
-  #         - lotuschat_cicd_provision
-  #       certificates: 
-  #         - lotuschat_cicd_cer
-      
-  #   triggering: # Định nghĩa các sự kiện nào sẽ kích hoạt workflow
-  #     events:   # Định nghĩa các sự kiện cụ thể sẽ kích hoạt workflow
-  #       - push
-  #       - tag
-  #     branch_patterns:    # Đinh nghĩa các nhánh mà workflow sẽ áp dụng
-  #       - pattern: main   # Chỉ định nhánh master là nhánh được áp dụng mẫu này
-  #         include: true   # xác định nhánh master là nhánh sẽ được bao gồm trong các nhánh kích hoạt workflow
-  #         source: true  
-  #   integrations:
-  #     app_store_connect: LotusChat Test CI/CD
-  #   scripts: 
-  #     - script: xcode-project use-profiles
-  #     - name: Build ipa for distribution
-  #       script: xcode-project build-ipa --project "$XCODE_PROJECT" --scheme "$XCODE_SCHEME" 
-  #   artifacts:
-  #     - build/ios/ipa/*.ipa
-  #     - /tmp/xcodebuild_logs/*.log
-  #     - $HOME/Library/Developer/Xcode/DerivedData/**/Build/**/*.app
-  #     - $HOME/Library/Developer/Xcode/DerivedData/**/Build/**/*.dSYM
-  #   publishing: 
-  #     app_store_connect:
-  #       auth: integration
-  #       submit_to_testflight: true 
-  #     email:
-  #       recipients:
-  #         - quannq35@mail.com # Replace with your email 
-  #       notify:
-  #         success: true
-  #         failure: true
+          failure: true
