@@ -34,22 +34,22 @@ workflows:
           -scheme "$XCODE_SCHEME" \
           CODE_SIGN_IDENTITY="" CODE_SIGNING_REQUIRED=NO CODE_SIGNING_ALLOWED=NO
 
-      # - name: Set up keychain to be used for code signing using Codemagic CLI 'keychain' command 
-      #   script: keychain initalize
+      - name: Set up keychain to be used for code signing using Codemagic CLI 'keychain' command 
+        script: keychain initalize
 
-      # - name: Fetching signing files
-      #   script: app-store-connect fetch-signing-files "com.vcc.test" \
-      #     -- type IOS_APP_STORE \
-      #     -- create
+      - name: Fetching signing files
+        script: app-store-connect fetch-signing-files "com.vcc.test" \
+          -- type IOS_APP_STORE \
+          -- create
       
-      # - name: Set up signing certificate
-      #   script: keychain add-certificate
+      - name: Set up signing certificate
+        script: keychain add-certificate
       
-      # - name: Set up code signing settings on XCode project
-      #   script: xcode-project use-profiles
+      - name: Set up code signing settings on XCode project
+        script: xcode-project use-profiles
       
-      # - name: Build App
-      #   script: xcode-project build-ipa --project "$XCODE_PROJECT" --scheme "$XCODE_SCHEME"
+      - name: Build App
+        script: xcode-project build-ipa --project "$XCODE_PROJECT" --scheme "$XCODE_SCHEME"
 
       # - name: Set up provision profile from enviroment variables
       #   script: |
@@ -101,7 +101,7 @@ workflows:
       app_store_connect: 
         api_key: $APP_STORE_CONNECT_PRIVATE_KEY
         key_id: $APP_STORE_CONNECT_KEY_IDENTIFIER
-        issuer_id: $APP_STORE_CONNECT_USER_ID
+        issuer_id: $APP_STORE_CONNECT_ISSUER_ID
       email:
         recipients:
           - quannq35@mail.com # Replace with your email 
