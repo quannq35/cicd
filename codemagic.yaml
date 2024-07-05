@@ -110,4 +110,4 @@ workflows:
           - quannq35@mail.com # Replace with your email 
         notify:
           success: true
-          failure: false
+          failure: true
