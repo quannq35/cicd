@@ -34,22 +34,22 @@ workflows:
       #     -scheme "$XCODE_SCHEME" \
       #     CODE_SIGN_IDENTITY="" CODE_SIGNING_REQUIRED=NO CODE_SIGNING_ALLOWED=NO
 
-      - name: Set up keychain to be used for code signing using Codemagic CLI 'keychain' command 
-        script: keychain initialize
+      # - name: Set up keychain to be used for code signing using Codemagic CLI 'keychain' command 
+      #   script: keychain initialize
 
-      - name: Fetching signing files
-        script: app-store-connect fetch-signing-files "com.vcc.test" \
-          --type IOS_APP_STORE \
-          --create
+      # - name: Fetching signing files
+      #   script: app-store-connect fetch-signing-files "com.vcc.test" \
+      #     --type IOS_APP_STORE \
+      #     --create
       
-      - name: Set up signing certificate
-        script: keychain add-certificate
+      # - name: Set up signing certificate
+      #   script: keychain add-certificate
       
-      - name: Set up code signing settings on XCode project
-        script: xcode-project use-profiles
+      # - name: Set up code signing settings on XCode project
+      #   script: xcode-project use-profiles
       
-      - name: Build App
-        script: xcode-project build-ipa --project "$XCODE_PROJECT" --scheme "$XCODE_SCHEME"
+      # - name: Build App
+      #   script: xcode-project build-ipa --project "$XCODE_PROJECT" --scheme "$XCODE_SCHEME"
 
       # - name: Set up provision profile from enviroment variables
       #   script: |
@@ -108,3 +108,37 @@ workflows:
         notify:
           success: true
           failure: false
+
+  testFlight: 
+    name: Publishing to TestFlight workflow
+    environment: 
+      ios_signing:
+        provisioning_profiles: 
+          - lotuschat_cicd_provision
+        certificates: 
+          - lotuschat_cicd_cer
+    integrations:
+      app_store_connect: LotusChat Test CI/CD
+    scripts: 
+      - script: xcode-project use-profiles
+      - name: Build ipa for distribution
+        script: xcode-project build ipa --project "$XCODE_PROJECT" --scheme "$XCODE_SCHEME"
+        # - name: Increment build number
+        #   script: | 
+        #     #!/bin/sh
+        #     cd $CM_BUILD_DIR
+        #     LATEST_BUILD_NUMBER=$(app-store-connect get-latest-app-store-build-number "$APP_STORE_APPLE_ID")
+        #     agvtool new-version -all $(($LATEST_BUILD_NUMBER + 1))  
+      - name: Build IPA
+        script: | 
+          xcodebuild -project "$XCODE_PROJECT" \
+          - scheme "$XCODE_SCHEME" \
+          - sdk iphoneos \
+          - configuration Realease \
+          - archive \
+          - archivePath $Home/build/cicd.xcarchive
+
+          xcodebuild -exportArchive \
+          - archivePath $HOME/build/cicd.xcarchive \
+          - exportOptionsPlist ExportOptions.plist \
+          - exportPath $HOME/build/
