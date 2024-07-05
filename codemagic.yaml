@@ -1,6 +1,6 @@
 workflows:  
-  ios-project-debug: # Workflow ID
-    name: iOS CICD # Workflow name
+  ios-debug: # Workflow ID
+    name: Build Debugs # Workflow name
     environment:
       xcode: latest
       cocoapods: default
@@ -8,9 +8,6 @@ workflows:
           BUNDLE_ID: "com.viva.lotusdev" # replace with your app bundle
           XCODE_PROJECT: "cicd.xcodeproj" #  
           XCODE_SCHEME: "cicd" # Replace with your project name
-      groups:
-        - admin
-      
     triggering: # Định nghĩa các sự kiện nào sẽ kích hoạt workflow
       events:   # Định nghĩa các sự kiện cụ thể sẽ kích hoạt workflow
         - push
@@ -109,8 +106,8 @@ workflows:
           success: true
           failure: false
 
-  testFlight: 
-    name: Publishing to TestFlight workflow
+  build-testflight: 
+    name: Build TestFlight
     environment: 
       xcode: latest
       cocoapods: default
