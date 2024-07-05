@@ -112,6 +112,23 @@ workflows:
   testFlight: 
     name: Publishing to TestFlight workflow
     environment: 
+    xcode: latest
+      cocoapods: default
+      vars:
+          BUNDLE_ID: "com.viva.lotusdev" # replace with your app bundle
+          XCODE_PROJECT: "cicd.xcodeproj" #  
+          XCODE_SCHEME: "cicd" # Replace with your project name
+      groups:
+        - admin
+      
+    triggering: # Định nghĩa các sự kiện nào sẽ kích hoạt workflow
+      events:   # Định nghĩa các sự kiện cụ thể sẽ kích hoạt workflow
+        - push
+        - tag
+      branch_patterns:    # Đinh nghĩa các nhánh mà workflow sẽ áp dụng
+        - pattern: main   # Chỉ định nhánh master là nhánh được áp dụng mẫu này
+          include: true   # xác định nhánh master là nhánh sẽ được bao gồm trong các nhánh kích hoạt workflow
+          source: true  
       ios_signing:
         provisioning_profiles: 
           - lotuschat_cicd_provision
