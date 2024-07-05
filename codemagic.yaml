@@ -21,7 +21,7 @@ workflows:
         - pattern: main   # Chỉ định nhánh master là nhánh được áp dụng mẫu này
           include: true   # xác định nhánh master là nhánh sẽ được bao gồm trong các nhánh kích hoạt workflow
           source: true    # Xác định nhánh mater sẽ là nguồn cho các sự kiện như push hoặc tag để kích hoạt workflow
-      integrations:
+    integrations:
         app_store_connect: LotusChat Test CI/CD
     scripts: # Chứa các lệnh cài đặt dependencies, build ứng dụng, chạy tests ...
       # - name: Run tests
