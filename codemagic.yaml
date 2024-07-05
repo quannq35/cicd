@@ -8,6 +8,11 @@ workflows:
           BUNDLE_ID: "com.viva.lotusdev" # replace with your app bundle
           XCODE_PROJECT: "cicd.xcodeproj" #  
           XCODE_SCHEME: "cicd" # Replace with your project name
+      ios_signing:
+        provisioning_profiles: 
+          - lotuschat_cicd_provision
+        certificates: 
+          - lotuschat_cicd_cer
     triggering: # Định nghĩa các sự kiện nào sẽ kích hoạt workflow
       events:   # Định nghĩa các sự kiện cụ thể sẽ kích hoạt workflow
         - push
@@ -16,6 +21,8 @@ workflows:
         - pattern: main   # Chỉ định nhánh master là nhánh được áp dụng mẫu này
           include: true   # xác định nhánh master là nhánh sẽ được bao gồm trong các nhánh kích hoạt workflow
           source: true    # Xác định nhánh mater sẽ là nguồn cho các sự kiện như push hoặc tag để kích hoạt workflow
+      integrations:
+        app_store_connect: LotusChat Test CI/CD
     scripts: # Chứa các lệnh cài đặt dependencies, build ứng dụng, chạy tests ...
       # - name: Run tests
       #   script: |
@@ -30,6 +37,9 @@ workflows:
           xcodebuild build -project "$XCODE_PROJECT" \
           -scheme "$XCODE_SCHEME" \
           CODE_SIGN_IDENTITY="" CODE_SIGNING_REQUIRED=NO CODE_SIGNING_ALLOWED=NO
+      - script: xcode-project use-profiles
+      - name: Build ipa for distribution
+        script: xcode-project build-ipa --project "$XCODE_PROJECT" --scheme "$XCODE_SCHEME" 
       
       # - name: Build ipa for distribution
       #   script: xcode-project build ipa --project "$XCODE_PROJECT" --scheme "$XCODE_SCHEME"
@@ -60,48 +70,6 @@ workflows:
        - $HOME/Library/Developer/Xcode/DerivedData/**/Build/**/*.app
        - $HOME/Library/Developer/Xcode/DerivedData/**/Build/**/*.dSYM
     publishing:
-      email:
-        recipients:
-          - quannq35@mail.com # Replace with your email 
-        notify:
-          success: true
-          failure: false
-
-  build-testflight: 
-    name: Build TestFlight
-    environment: 
-      xcode: latest
-      cocoapods: default
-      vars:
-          BUNDLE_ID: "com.viva.lotusdev" # replace with your app bundle
-          XCODE_PROJECT: "cicd.xcodeproj" #  
-          XCODE_SCHEME: "cicd" # Replace with your project name
-      ios_signing:
-        provisioning_profiles: 
-          - lotuschat_cicd_provision
-        certificates: 
-          - lotuschat_cicd_cer
-      
-    triggering: # Định nghĩa các sự kiện nào sẽ kích hoạt workflow
-      events:   # Định nghĩa các sự kiện cụ thể sẽ kích hoạt workflow
-        - push
-        - tag
-      branch_patterns:    # Đinh nghĩa các nhánh mà workflow sẽ áp dụng
-        - pattern: main   # Chỉ định nhánh master là nhánh được áp dụng mẫu này
-          include: true   # xác định nhánh master là nhánh sẽ được bao gồm trong các nhánh kích hoạt workflow
-          source: true  
-    integrations:
-      app_store_connect: LotusChat Test CI/CD
-    scripts: 
-      - script: xcode-project use-profiles
-      - name: Build ipa for distribution
-        script: xcode-project build-ipa --project "$XCODE_PROJECT" --scheme "$XCODE_SCHEME" 
-    artifacts:
-      - build/ios/ipa/*.ipa
-      - /tmp/xcodebuild_logs/*.log
-      - $HOME/Library/Developer/Xcode/DerivedData/**/Build/**/*.app
-      - $HOME/Library/Developer/Xcode/DerivedData/**/Build/**/*.dSYM
-    publishing: 
       app_store_connect:
         auth: integration
         submit_to_testflight: true 
@@ -110,4 +78,49 @@ workflows:
           - quannq35@mail.com # Replace with your email 
         notify:
           success: true
-          failure: true
+          failure: false
+
+  # build-testflight: 
+  #   name: Build TestFlight
+  #   environment: 
+  #     xcode: latest
+  #     cocoapods: default
+  #     vars:
+  #         BUNDLE_ID: "com.viva.lotusdev" # replace with your app bundle
+  #         XCODE_PROJECT: "cicd.xcodeproj" #  
+  #         XCODE_SCHEME: "cicd" # Replace with your project name
+  #     ios_signing:
+  #       provisioning_profiles: 
+  #         - lotuschat_cicd_provision
+  #       certificates: 
+  #         - lotuschat_cicd_cer
+      
+  #   triggering: # Định nghĩa các sự kiện nào sẽ kích hoạt workflow
+  #     events:   # Định nghĩa các sự kiện cụ thể sẽ kích hoạt workflow
+  #       - push
+  #       - tag
+  #     branch_patterns:    # Đinh nghĩa các nhánh mà workflow sẽ áp dụng
+  #       - pattern: main   # Chỉ định nhánh master là nhánh được áp dụng mẫu này
+  #         include: true   # xác định nhánh master là nhánh sẽ được bao gồm trong các nhánh kích hoạt workflow
+  #         source: true  
+  #   integrations:
+  #     app_store_connect: LotusChat Test CI/CD
+  #   scripts: 
+  #     - script: xcode-project use-profiles
+  #     - name: Build ipa for distribution
+  #       script: xcode-project build-ipa --project "$XCODE_PROJECT" --scheme "$XCODE_SCHEME" 
+  #   artifacts:
+  #     - build/ios/ipa/*.ipa
+  #     - /tmp/xcodebuild_logs/*.log
+  #     - $HOME/Library/Developer/Xcode/DerivedData/**/Build/**/*.app
+  #     - $HOME/Library/Developer/Xcode/DerivedData/**/Build/**/*.dSYM
+  #   publishing: 
+  #     app_store_connect:
+  #       auth: integration
+  #       submit_to_testflight: true 
+  #     email:
+  #       recipients:
+  #         - quannq35@mail.com # Replace with your email 
+  #       notify:
+  #         success: true
+  #         failure: true
