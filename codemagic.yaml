@@ -118,8 +118,11 @@ workflows:
           BUNDLE_ID: "com.viva.lotusdev" # replace with your app bundle
           XCODE_PROJECT: "cicd.xcodeproj" #  
           XCODE_SCHEME: "cicd" # Replace with your project name
-      groups:
-        - admin
+      ios_signing:
+        provisioning_profiles: 
+          - lotuschat_cicd_provision
+        certificates: 
+          - lotuschat_cicd_cer
       
     triggering: # Định nghĩa các sự kiện nào sẽ kích hoạt workflow
       events:   # Định nghĩa các sự kiện cụ thể sẽ kích hoạt workflow
@@ -129,11 +132,6 @@ workflows:
         - pattern: main   # Chỉ định nhánh master là nhánh được áp dụng mẫu này
           include: true   # xác định nhánh master là nhánh sẽ được bao gồm trong các nhánh kích hoạt workflow
           source: true  
-      ios_signing:
-        provisioning_profiles: 
-          - lotuschat_cicd_provision
-        certificates: 
-          - lotuschat_cicd_cer
     integrations:
       app_store_connect: LotusChat Test CI/CD
     scripts: 
