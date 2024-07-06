@@ -33,7 +33,8 @@ workflows:
       - name: Install SwiftLint
         script: brew install swiftlint
       - name: Run SwiftLint
-        script: swiftlint
+        script: | 
+        swiftlint
 
       # - name: Run Unit Test
       #   script: |
@@ -74,7 +75,7 @@ workflows:
       #     - exportOptionsPlist ExportOptions.plist \
       #     - exportPath $HOME/build/
     artifacts: # Chỉ định các tệp hoặc thư mục sẽ được lưu trữ sau quá trình build
-      - .swiftLint.yml 
+      - .swiftlint.yml
       - build/ios/ipa/*.ipa
       - /tmp/xcodebuild_logs/*.log
       - $HOME/Library/Developer/Xcode/DerivedData/**/Build/**/*.app
