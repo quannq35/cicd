@@ -12,9 +12,9 @@ class ViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         // Do any additional setup after loading the view.
-        print("URL is", CicdEnviroment.rootURL)
-        print("API_Key is", CicdEnviroment.apiKey)
-        
+//        print("URL is", CicdEnviroment.rootURL)
+//        print("API_Key is", CicdEnviroment.apiKey)
+//        
     }
 
 
