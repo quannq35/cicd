@@ -1,62 +1,99 @@
 workflows:  
-  ios-project-debug: # Workflow ID
-    name: iOS CICD # Workflow name
+  ios-cicd: # Workflow ID
+    name: Build Debugs # Workflow name
     environment:
       xcode: latest
       cocoapods: default
       vars:
-          BUNDLE_ID: "com.quannq.cicd" # replace with your app bundle
-          XCODE_PROJECT: "cicd.xcodeproj" #  
+          BUNDLE_ID: "com.viva.lotusdev" # replace with your app bundle
+          XCODE_PROJECT: "cicd.xcodeproj" # 
+          XCODE_WORKSPACE: "cicd.xcworkspace" #
           XCODE_SCHEME: "cicd" # Replace with your project name
-      
-    triggering: # Định nghĩa các sự kiện nào sẽ kích hoạt workflow
-      events:   # Định nghĩa các sự kiện cụ thể sẽ kích hoạt workflow
-        - push
-        - tag
-      branch_patterns: # Đinh nghĩa các nhánh mà workflow sẽ áp dụng
-        - pattern: master  # Chỉ định nhánh master là nhánh được áp dụng mẫu này
-          include: true    # xác định nhánh master là nhánh sẽ được bao gồm trong các nhánh kích hoạt workflow
-          source: true     # Xác định nhánh mater sẽ là nguồn cho các sự kiện như push hoặc tag để kích hoạt workflow
+      ios_signing:
+        provisioning_profiles: 
+          - lotuschat_cicd_provision
+        certificates: 
+          - lotuschat_cicd_cer
+    
+    # triggering: # Định nghĩa các sự kiện nào sẽ kích hoạt workflow
+    #   events:   # Định nghĩa các sự kiện cụ thể sẽ kích hoạt workflow
+    #     - push
+    #     - tag
+    #   branch_patterns:    # Đinh nghĩa các nhánh mà workflow sẽ áp dụng
+    #     - pattern: main   # Chỉ định nhánh main là nhánh được áp dụng mẫu này
+    #       include: true   # xác định nhánh main là nhánh sẽ được bao gồm trong các nhánh kích hoạt workflow
+    #       source: true    # Xác định nhánh main sẽ là nguồn cho các sự kiện như push hoặc tag để kích hoạt workflow
+    
+    trigger:
+      branch:
+        only:
+          - main
+    integrations:
+        app_store_connect: LotusChat Test CI/CD
 
-    scripts:
-      - name: Run tests
+    scripts: # Chứa các lệnh cài đặt dependencies, build ứng dụng, chạy tests ...
+
+      - name: Install dependencies  # Nếu install pod thì đổi xcodeproj -> xcworkspace
+        script: |
+          gem install cocoapods
+          pod install
+
+      - name: Run SwiftLint
+        script: | 
+          swiftlint
+
+      - name: Run Unit Test
         script: |
           xcodebuild \
-          -project "$XCODE_PROJECT" \
+          -workspace "$XCODE_WORKSPACE" \
           -scheme "$XCODE_SCHEME" \
           -sdk iphonesimulator \
           -destination 'platform=iOS Simulator,name=iPhone 15,OS=17.5' \
-          clean build test CODE_SIGN_IDENTITY="" CODE_SIGNING_REQUIRED=NO          
-    #   - name: Build debug app
-    #     script: |
-    #       xcodebuild build -project "$XCODE_PROJECT" \
-    #       -scheme "$XCODE_SCHEME" \
-    #       CODE_SIGN_IDENTITY="" CODE_SIGNING_REQUIRED=NO CODE_SIGNING_ALLOWED=NO - name: Build ipa for distribution
-    #   - name: Increment build number
-    #     script: | 
-    #       #!/bin/sh
-    #       cd $CM_BUILD_DIR
-    #       LATEST_BUILD_NUMBER=$(app-store-connect get-latest-app-store-build-number "$APP_STORE_APPLE_ID")
-    #       agvtool new-version -all $(($LATEST_BUILD_NUMBER + 1))      
-    #   - name: Build ipa for distribution
-    #     script: | 
-    #       xcode-project build-ipa \
-    #       --workspace "$CM_BUILD_DIR/$XCODE_WORKSPACE" \
-    #       --scheme "$XCODE_SCHEME"
-    # artifacts:
-    #    - build/ios/ipa/*.ipa
-    #    - /tmp/xcodebuild_logs/*.log
-    #    - $HOME/Library/Developer/Xcode/DerivedData/**/Build/**/*.app
-    #    - $HOME/Library/Developer/Xcode/DerivedData/**/Build/**/*.dSYM
-    publishing:
+          clean build test \
+          CODE_SIGN_IDENTITY="" CODE_SIGNING_REQUIRED=NO          
+      - name: Build debug app
+        script: |
+          xcodebuild build -workspace "$XCODE_WORKSPACE" \
+          -scheme "$XCODE_SCHEME" \
+          CODE_SIGN_IDENTITY="" CODE_SIGNING_REQUIRED=NO CODE_SIGNING_ALLOWED=NO
+
+      - script: xcode-project use-profiles # Áp dụng các profiles provisioning đã cấu hình cho dự án Xcode, giúp xác định quyền truy cập và cấu hình phát triển ứng dụng
+      
+      # - name: Increment build number
+      #   script: |
+      #     agvtool next-version -all
+
+      - name: Build ipa for distribution
+        script: xcode-project build-ipa --workspace "$XCODE_WORKSPACE" --scheme "$XCODE_SCHEME" 
+       
+
+      # - name: Build IPA
+      #   script: | 
+      #     xcodebuild -workspace cicd.xcodeproj \
+      #     - scheme "$XCODE_SCHEME" \
+      #     - sdk iphoneos \
+      #     - configuration Realease \
+      #     - archive \
+      #     - archivePath $Home/build/cicd.xcarchive
+
+      #     xcodebuild -exportArchive \
+      #     - archivePath $HOME/build/cicd.xcarchive \
+      #     - exportOptionsPlist ExportOptions.plist \
+      #     - exportPath $HOME/build/
+    artifacts: # Chỉ định các tệp hoặc thư mục sẽ được lưu trữ sau quá trình build
+      - .swiftlint.yml
+      - build/ios/ipa/*.ipa
+      - /tmp/xcodebuild_logs/*.log
+      - $HOME/Library/Developer/Xcode/DerivedData/**/Build/**/*.app
+      - $HOME/Library/Developer/Xcode/DerivedData/**/Build/**/*.dSYM
+    
+    publishing: # Bắt đầu cho quá trình phát hành ứng dụng
+      app_store_connect:
+        auth: integration
+        submit_to_testflight: true 
       email:
         recipients:
-          - quannq35@mail.com # Replace with your email
-triggering: # Định nghĩa các sự kiện nào sẽ kích hoạt workflow
-      events:   # Định nghĩa các sự kiện cụ thể sẽ kích hoạt workflow
-        - push
-        - tag
-      branch_patterns: # Đinh nghĩa các nhánh mà workflow sẽ áp dụng
-        - pattern: master  # Chỉ định nhánh master là nhánh được áp dụng mẫu này
-          include: true    # xác định nhánh master là nhánh sẽ được bao gồm trong các nhánh kích hoạt workflow
-          source: true   
+          - quannq35@gmail.com # Replace with your email 
+        notify:
+          success: true
+          failure: true
