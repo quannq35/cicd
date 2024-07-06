@@ -30,11 +30,12 @@ workflows:
         # script: |
         #   gem install cocoapods
         #   pod install
-      # - name: Install SwiftLint
-      #   script: brew install swiftlint
-      # - name: Run SwiftLint
-      #   script: | 
-      #   swiftlint
+      - name: Install SwiftLint
+        script: brew install swiftlint
+      - name: Run SwiftLint
+        script: | 
+          echo "Running SwiftLint..."
+          swiftlint
 
       - name: Run Unit Test
         script: |
