@@ -152,11 +152,11 @@
 				A8E2034D2C33FFC200718E79 /* AppDelegate.swift */,
 				A8E2034F2C33FFC200718E79 /* SceneDelegate.swift */,
 				A8E203512C33FFC200718E79 /* ViewController.swift */,
+				A8E2037F2C34FA6F00718E79 /* CalculatorViewModel.swift */,
 				A8E203532C33FFC200718E79 /* Main.storyboard */,
 				A8E203562C33FFC400718E79 /* Assets.xcassets */,
 				A8E203582C33FFC400718E79 /* LaunchScreen.storyboard */,
 				A8E2035B2C33FFC400718E79 /* Info.plist */,
-				A8E2037F2C34FA6F00718E79 /* CalculatorViewModel.swift */,
 			);
 			path = cicd;
 			sourceTree = "<group>";
@@ -211,7 +211,6 @@
 				29DF5702D59237A4AEB90D50 /* Pods-cicdTests.release(staging).xcconfig */,
 				1200FE406B2F25FD5DF43E2F /* Pods-cicdTests.release(production).xcconfig */,
 			);
-			name = Pods;
 			path = Pods;
 			sourceTree = "<group>";
 		};
