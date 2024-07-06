@@ -27,9 +27,9 @@ workflows:
     scripts: # Chứa các lệnh cài đặt dependencies, build ứng dụng, chạy tests ...
 
       - name: Install dependencies  # Nếu install pod thì đổi xcodeproj -> xcworkspace
-      #   script: |
-      #     gem install cocoapods
-      #     pod install
+        script: |
+          gem install cocoapods
+          pod install
       # # - name: Install SwiftLint
       # #   script: brew install swiftlint
       - name: Run SwiftLint
