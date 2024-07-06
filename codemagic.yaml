@@ -74,10 +74,11 @@ workflows:
       #     - exportOptionsPlist ExportOptions.plist \
       #     - exportPath $HOME/build/
     artifacts: # Chỉ định các tệp hoặc thư mục sẽ được lưu trữ sau quá trình build
-       - build/ios/ipa/*.ipa
-       - /tmp/xcodebuild_logs/*.log
-       - $HOME/Library/Developer/Xcode/DerivedData/**/Build/**/*.app
-       - $HOME/Library/Developer/Xcode/DerivedData/**/Build/**/*.dSYM
+      - .swiftLint.yml 
+      - build/ios/ipa/*.ipa
+      - /tmp/xcodebuild_logs/*.log
+      - $HOME/Library/Developer/Xcode/DerivedData/**/Build/**/*.app
+      - $HOME/Library/Developer/Xcode/DerivedData/**/Build/**/*.dSYM
     
     publishing: # Bắt đầu cho quá trình phát hành ứng dụng
       app_store_connect:
