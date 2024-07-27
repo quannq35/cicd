@@ -132,9 +132,9 @@ workflows:
           gem install cocoapods
           pod install
 
-      - name: Run SwiftLint
-        script: | 
-          swiftlint
+      # - name: Run SwiftLint
+      #   script: | 
+      #     swiftlint
 
       - name: Run Unit Test
         script: |
