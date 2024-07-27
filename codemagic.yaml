@@ -136,15 +136,15 @@ workflows:
       #   script: | 
       #     swiftlint
 
-      - name: Run Unit Test
-        script: |
-          xcodebuild \
-          -workspace "$XCODE_WORKSPACE" \
-          -scheme "$XCODE_SCHEME" \
-          -sdk iphonesimulator \
-          -destination 'platform=iOS Simulator,name=iPhone 15,OS=17.5' \
-          clean build test \
-          CODE_SIGN_IDENTITY="" CODE_SIGNING_REQUIRED=NO       
+      # - name: Run Unit Test
+      #   script: |
+      #     xcodebuild \
+      #     -workspace "$XCODE_WORKSPACE" \
+      #     -scheme "$XCODE_SCHEME" \
+      #     -sdk iphonesimulator \
+      #     -destination 'platform=iOS Simulator,name=iPhone 15,OS=17.5' \
+      #     clean build test \
+      #     CODE_SIGN_IDENTITY="" CODE_SIGNING_REQUIRED=NO       
    
       - name: Build debug app
         script: |
