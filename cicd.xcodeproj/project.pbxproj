@@ -304,7 +304,6 @@
 					};
 					A8E2035F2C33FFC400718E79 = {
 						CreatedOnToolsVersion = 15.4;
-						TestTargetID = A8E203492C33FFC200718E79;
 					};
 					A8E203692C33FFC400718E79 = {
 						CreatedOnToolsVersion = 15.4;
@@ -690,7 +689,6 @@
 			baseConfigurationReference = 19BA88AF5CB9CFFF9A4AE464 /* Pods-cicdTests.debug.xcconfig */;
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
-				BUNDLE_LOADER = "$(TEST_HOST)";
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = BSYS38B5GY;
@@ -702,7 +700,6 @@
 				SWIFT_EMIT_LOC_STRINGS = NO;
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
-				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/cicd.app/$(BUNDLE_EXECUTABLE_FOLDER_PATH)/cicd";
 			};
 			name = Debug;
 		};
@@ -711,7 +708,6 @@
 			baseConfigurationReference = 6071C5B1EB024AFAEA52348D /* Pods-cicdTests.release.xcconfig */;
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
-				BUNDLE_LOADER = "$(TEST_HOST)";
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = BSYS38B5GY;
@@ -723,7 +719,6 @@
 				SWIFT_EMIT_LOC_STRINGS = NO;
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
-				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/cicd.app/$(BUNDLE_EXECUTABLE_FOLDER_PATH)/cicd";
 			};
 			name = Release;
 		};
@@ -863,7 +858,6 @@
 			baseConfigurationReference = AEABD95AE4398829A8C7950D /* Pods-cicdTests.debug(staging).xcconfig */;
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
-				BUNDLE_LOADER = "$(TEST_HOST)";
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = BSYS38B5GY;
@@ -875,7 +869,6 @@
 				SWIFT_EMIT_LOC_STRINGS = NO;
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
-				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/cicd.app/$(BUNDLE_EXECUTABLE_FOLDER_PATH)/cicd";
 			};
 			name = "Debug(Staging)";
 		};
@@ -997,7 +990,6 @@
 			baseConfigurationReference = B2D57DC2171FD011BD81DB93 /* Pods-cicdTests.debug(production).xcconfig */;
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
-				BUNDLE_LOADER = "$(TEST_HOST)";
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = BSYS38B5GY;
@@ -1009,7 +1001,6 @@
 				SWIFT_EMIT_LOC_STRINGS = NO;
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
-				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/cicd.app/$(BUNDLE_EXECUTABLE_FOLDER_PATH)/cicd";
 			};
 			name = "Debug(Production)";
 		};
@@ -1125,7 +1116,6 @@
 			baseConfigurationReference = 29DF5702D59237A4AEB90D50 /* Pods-cicdTests.release(staging).xcconfig */;
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
-				BUNDLE_LOADER = "$(TEST_HOST)";
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = BSYS38B5GY;
@@ -1137,7 +1127,6 @@
 				SWIFT_EMIT_LOC_STRINGS = NO;
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
-				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/cicd.app/$(BUNDLE_EXECUTABLE_FOLDER_PATH)/cicd";
 			};
 			name = "Release(Staging)";
 		};
@@ -1253,7 +1242,6 @@
 			baseConfigurationReference = 1200FE406B2F25FD5DF43E2F /* Pods-cicdTests.release(production).xcconfig */;
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
-				BUNDLE_LOADER = "$(TEST_HOST)";
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = BSYS38B5GY;
@@ -1265,7 +1253,6 @@
 				SWIFT_EMIT_LOC_STRINGS = NO;
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
-				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/cicd.app/$(BUNDLE_EXECUTABLE_FOLDER_PATH)/cicd";
 			};
 			name = "Release(Production)";
 		};
