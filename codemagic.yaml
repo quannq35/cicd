@@ -13,7 +13,7 @@ workflows:
       ios_signing:  # Thiết lập liên quan đến việc ký mã cho dự án iOS. Là bước quan trọng để đảm bảo ứng dụng được xác thực và an toàn khi chạy                    
         provisioning_profiles: # Xác định thiết bị nào có thể chạy được ứng dụng 
           - lotuschat_cicd_provision
-        certificates:  # Chứng chỉ này xác thực bạn là nhà phát triển hợp pháp của ứng dụng bảo đảm ứng dụng không bị thay đổi sau khi được ký.
+        certificates:  # Certificate (chứng chỉ) đảm bảo rằng chỉ những nhà phát triển được uỷ quyền mới có thể xây dựng và phân phối ứng dụng cho các thiết bị của apple.
           - lotuschat_cicd_cer
     
     triggering: # Định nghĩa các sự kiện nào sẽ kích hoạt workflow
@@ -87,7 +87,7 @@ workflows:
     
     publishing: # Bắt đầu cho quá trình phát hành ứng dụng
       app_store_connect:
-        auth: integration
+        auth: integration # Tr
         submit_to_testflight: true 
       email:
         recipients:
