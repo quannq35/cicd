@@ -1,6 +1,6 @@
 workflows:  
   ios-cicd: # Workflow ID
-    name: Build Debugs # Workflow name
+    name: demo cicd # Workflow name
     environment:
       xcode: latest
       cocoapods: default
@@ -9,10 +9,11 @@ workflows:
           XCODE_PROJECT: "cicd.xcodeproj" # 
           XCODE_WORKSPACE: "cicd.xcworkspace" #
           XCODE_SCHEME: "cicd" # Replace with your project name
-      ios_signing:
-        provisioning_profiles: 
+     
+      ios_signing:  # Thiết lập liên quan đến việc ký mã cho dự án iOS. Là bước quan trọng để đảm bảo ứng dụng được xác thực và an toàn khi chạy                    
+        provisioning_profiles: # Xác định thiết bị nào có thể chạy được ứng dụng 
           - lotuschat_cicd_provision
-        certificates: 
+        certificates:  # Chứng chỉ này xác thực bạn là nhà phát triển hợp pháp của ứng dụng bảo đảm ứng dụng không bị thay đổi sau khi được ký.
           - lotuschat_cicd_cer
     
     triggering: # Định nghĩa các sự kiện nào sẽ kích hoạt workflow
@@ -46,7 +47,8 @@ workflows:
           -sdk iphonesimulator \
           -destination 'platform=iOS Simulator,name=iPhone 15,OS=17.5' \
           clean build test \
-          CODE_SIGN_IDENTITY="" CODE_SIGNING_REQUIRED=NO          
+          CODE_SIGN_IDENTITY="" CODE_SIGNING_REQUIRED=NO       
+   
       - name: Build debug app
         script: |
           xcodebuild build -workspace "$XCODE_WORKSPACE" \
