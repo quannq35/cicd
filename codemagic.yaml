@@ -49,6 +49,103 @@ workflows:
           clean build test \
           CODE_SIGN_IDENTITY="" CODE_SIGNING_REQUIRED=NO       
    
+      # - name: Build debug app
+      #   script: |
+      #     xcodebuild build -workspace "$XCODE_WORKSPACE" \
+      #     -scheme "$XCODE_SCHEME" \
+      #     CODE_SIGN_IDENTITY="" CODE_SIGNING_REQUIRED=NO CODE_SIGNING_ALLOWED=NO
+
+      - script: xcode-project use-profiles # Áp dụng các profiles provisioning đã cấu hình cho dự án Xcode, giúp xác định quyền truy cập và cấu hình phát triển ứng dụng
+      
+      # - name: Increment build number
+      #   script: |
+      #     agvtool next-version -all
+
+      - name: Build ipa for distribution
+        script: xcode-project build-ipa --workspace "$XCODE_WORKSPACE" --scheme "$XCODE_SCHEME" 
+       
+
+      # - name: Build IPA
+      #   script: | 
+      #     xcodebuild -workspace cicd.xcodeproj \
+      #     - scheme "$XCODE_SCHEME" \
+      #     - sdk iphoneos \
+      #     - configuration Realease \
+      #     - archive \
+      #     - archivePath $Home/build/cicd.xcarchive
+
+      #     xcodebuild -exportArchive \
+      #     - archivePath $HOME/build/cicd.xcarchive \
+      #     - exportOptionsPlist ExportOptions.plist \
+      #     - exportPath $HOME/build/
+    artifacts: # Chỉ định các tệp hoặc thư mục sẽ được lưu trữ sau quá trình build
+      - .swiftlint.yml
+      - build/ios/ipa/*.ipa
+      - /tmp/xcodebuild_logs/*.log
+      - $HOME/Library/Developer/Xcode/DerivedData/**/Build/**/*.app
+      - $HOME/Library/Developer/Xcode/DerivedData/**/Build/**/*.dSYM
+    
+    publishing: # Bắt đầu cho quá trình phát hành ứng dụng
+      app_store_connect:
+        auth: integration # Tr
+        submit_to_testflight: true 
+      email:
+        recipients:
+          - quannq35@gmail.com # Replace with your email 
+        notify:
+          success: true
+          failure: true
+  
+  ios-cicd-develop: # Workflow ID
+    name: demo cicd # Workflow name
+    environment:
+      xcode: latest
+      cocoapods: default
+      vars:
+          BUNDLE_ID: "com.viva.lotusdev" # replace with your app bundle
+          XCODE_PROJECT: "cicd.xcodeproj" # 
+          XCODE_WORKSPACE: "cicd.xcworkspace" #
+          XCODE_SCHEME: "cicd" # Replace with your project name
+     
+      ios_signing:  # Thiết lập liên quan đến việc ký mã cho dự án iOS. Là bước quan trọng để đảm bảo ứng dụng được xác thực và an toàn khi chạy                    
+        provisioning_profiles: # Xác định thiết bị nào có thể chạy được ứng dụng 
+          - lotuschat_cicd_provision
+        certificates:  # Certificate (chứng chỉ) đảm bảo rằng chỉ những nhà phát triển được uỷ quyền mới có thể xây dựng và phân phối ứng dụng cho các thiết bị của apple.
+          - lotuschat_cicd_cer
+    
+    triggering: # Định nghĩa các sự kiện nào sẽ kích hoạt workflow
+      events:   # Định nghĩa các sự kiện cụ thể sẽ kích hoạt workflow
+        - push
+        - tag
+      branch_patterns:    # Đinh nghĩa các nhánh mà workflow sẽ áp dụng
+        - pattern: develop   # Chỉ định nhánh main là nhánh được áp dụng mẫu này
+          include: true   # xác định main là nhánh sẽ được bao gồm trong các nhánh kích hoạt workflow
+          # source: true    # Xác định nhánh main sẽ là nguồn cho các sự kiện như push hoặc tag để kích hoạt workflow
+    
+    integrations:
+        app_store_connect: LotusChat Test CI/CD
+
+    scripts: # Chứa các lệnh cài đặt dependencies, build ứng dụng, chạy tests ...
+
+      - name: Install dependencies  # Nếu install pod thì đổi xcodeproj -> xcworkspace
+        script: |
+          gem install cocoapods
+          pod install
+
+      - name: Run SwiftLint
+        script: | 
+          swiftlint
+
+      - name: Run Unit Test
+        script: |
+          xcodebuild \
+          -workspace "$XCODE_WORKSPACE" \
+          -scheme "$XCODE_SCHEME" \
+          -sdk iphonesimulator \
+          -destination 'platform=iOS Simulator,name=iPhone 15,OS=17.5' \
+          clean build test \
+          CODE_SIGN_IDENTITY="" CODE_SIGNING_REQUIRED=NO       
+   
       - name: Build debug app
         script: |
           xcodebuild build -workspace "$XCODE_WORKSPACE" \
